@@ -1,0 +1,71 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="id"/>
+    </cc:interface>
+    <cc:implementation>                      
+        <h:panelGroup id="slopeStabilityRadar" >            
+            <script type="text/javascript">
+                function addMarker(latitude, longitude, diagnostics, animate){
+                    var image = "#{request.contextPath}/img/24X24/GeoSeer_icon_1.gif";
+                    var latlng = new google.maps.LatLng(latitude, longitude);
+                    var marker = new google.maps.Marker({
+                          position: latlng, 
+                          map: window.myValue, 
+                          icon: image,
+                          title: diagnostics});                 
+                    slopeStabilityRadarMarkersArray.push(marker);                         
+                    if (animate)
+                      marker.setAnimation(google.maps.Animation.BOUNCE);                    
+                }
+            
+                if (slopeStabilityRadarMarkersArray) {                        
+                    for (i in slopeStabilityRadarMarkersArray) {
+                        if (slopeStabilityRadarMarkersArray[i] instanceof google.maps.Marker) {
+                            slopeStabilityRadarMarkersArray[i].setMap(null);
+                        }                           
+                    }
+                    var slopeStabilityRadarMarkersArray = [];
+                }
+            </script>
+            
+            
+            <h:panelGroup rendered="#{overlayOptionsBean.displaySlopeStabilityRadar}">
+                <ui:repeat var="site" value="#{homeBean.siteList}">
+                    <ui:repeat var="pit" value="#{site.pitList}">
+                        <ui:repeat var="deployment" value="#{pit.deploymentList}">
+                            <h:panelGroup rendered="#{deployment.type == 1}">
+
+                                <h:panelGroup rendered="#{alertOptionsBean.alarmSlopeStabilityRadar}">
+                                    <h:panelGroup rendered="#{deployment.activeAlarm}">
+                                        <script type="text/javascript">                                                       
+                                            addMarker(#{deployment.mapDetails.latitude}, #{deployment.mapDetails.longitude}, "#{deployment.diagnostics}", true);
+                                        </script>
+                                    </h:panelGroup>
+                                    <h:panelGroup rendered="#{!deployment.activeAlarm}">                                        
+                                        <script type="text/javascript">                                                       
+                                            addMarker(#{deployment.mapDetails.latitude}, #{deployment.mapDetails.longitude}, "#{deployment.diagnostics}", false);
+                                        </script>
+                                    </h:panelGroup>                                    
+                                </h:panelGroup>
+                                
+                                <h:panelGroup rendered="#{!alertOptionsBean.alarmSlopeStabilityRadar}">
+                                        <script type="text/javascript">                                                       
+                                            addMarker(#{deployment.mapDetails.latitude}, #{deployment.mapDetails.longitude}, "#{deployment.diagnostics}", false);
+                                        </script>
+                                </h:panelGroup>
+
+                                
+                            </h:panelGroup>
+                        </ui:repeat>
+                    </ui:repeat>
+                </ui:repeat>
+            </h:panelGroup>            
+        </h:panelGroup>        
+    </cc:implementation>
+</ui:component>

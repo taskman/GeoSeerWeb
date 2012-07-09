@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:home="http://java.sun.com/jsf/composite/components/home"
+      xmlns:geoview="http://java.sun.com/jsf/composite/components/geoview">
+    <h:head>  
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <script type="text/javascript"
+                src="http://maps.googleapis.com/maps/api/js?sensor=false">
+        </script>
+        <script type="text/javascript">
+          var slopeStabilityRadarMarkersArray = [];
+          var surveyPrismsMarkersArray = [];
+          var mineSurveyRadarMarkersArray = [];
+          var wallMarkersArray = [];
+          var map;
+          var groundOverlaySandSloot;
+           var groundOverlayCentral;
+          
+          function initialize(latitude, longitude, zoomAmount) {              
+            var latlng = new google.maps.LatLng(latitude, longitude);
+            var myOptions = {
+              zoom: zoomAmount,
+              center: latlng,
+              disableDefaultUI: true,
+              panControl: true,
+              zoomControl: true,
+              mapTypeControl: false,
+              scaleControl: true,
+              streetViewControl: false,
+              overviewMapControl: true,              
+              mapTypeId: google.maps.MapTypeId.SATELLITE 
+            };
+            map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);               
+            window.myValue = map;                           
+          }
+          
+          function changeGroundOverlay(display) {            
+            if (display) {
+                var imageBounds = new google.maps.LatLngBounds(
+                                        new google.maps.LatLng(-24.021144,28.905623),
+                                        new google.maps.LatLng(-24.0037,28.919098));                
+                groundOverlaySandSloot = new google.maps.GroundOverlay("#{request.contextPath}/img/Pit_Plan_Sandsloot.gif", imageBounds);
+                groundOverlaySandSloot.setMap(map);            
+                
+                
+                imageBounds = new google.maps.LatLngBounds(
+                                        new google.maps.LatLng(-23.997936,28.900731),
+                                        new google.maps.LatLng(-23.984449,28.912146));
+                groundOverlayCentral = new google.maps.GroundOverlay("#{request.contextPath}/img/Pit_Plan_Central.gif", imageBounds);
+                groundOverlayCentral.setMap(map);            
+            }
+            else {
+                if (groundOverlaySandSloot != null)
+                    groundOverlaySandSloot.setMap(null);
+                
+                if (groundOverlayCentral != null)
+                    groundOverlayCentral.setMap(null);
+            }
+          }
+
+          function changeMapCenter(latitude, longitude, zoomAmount) {
+            var latlng = new google.maps.LatLng(latitude, longitude);
+            var map = window.myValue;
+            map.setCenter(latlng);
+            map.setZoom(zoomAmount);
+          }
+          
+          function onWallClick() {
+              var w = 1280;
+              var h = 720;
+              var url = "indexWall.jsf";
+              w += 32;
+              h += 96;
+              wleft = (screen.width - w) / 2;
+              wtop = (screen.height - h) / 2;
+
+              var win = window.open(url,
+                name,
+                'width=' + w + ', height=' + h + ', ' +
+                'left=' + wleft + ', top=' + wtop + ', ' +
+                'location=no, menubar=no, ' +
+                'status=no, toolbar=no, scrollbars=no, resizable=no');
+              // Just in case width and height are ignored
+              win.resizeTo(w, h);
+              // Just in case left and top are ignored
+              win.moveTo(wleft, wtop);
+              win.focus();
+  
+            
+          }
+        </script>
+
+        <style type="text/css">
+            .ui-widget {
+                font-size: 65%;
+            }
+            .ui-tabs .ui-tabs-panel {
+                padding: 0em 0em;
+            }
+        </style>
+
+    </h:head>
+    <h:body>
+        <h:form id="geoSeerMainForm">
+            <p:layout fullPage="true">
+                <p:layoutUnit position="center">                                        
+
+                    <p:tabView id="geoSeerMainTabView" style="border: 1px;" dynamic="false">
+                        <p:tab title="Home">
+                            <p:layout style="min-width:400px;min-height:200px;height: 550px" id="homeLayout">
+                                <p:layoutUnit position="west" size="210" style="border: 1px">
+                                    <home:optionsMenu/>
+                                </p:layoutUnit>
+                                <p:layoutUnit position="center" style="border: 0px">  
+                                    <div id="map_canvas" style="width:100%; height:100%"></div>
+                                </p:layoutUnit>     
+                            </p:layout>    
+                            
+
+                            <h:panelGroup id="initMap">
+                                <script type="text/javascript">
+                                    initialize(#{homeBean.currentMapDetails.latitude}, #{homeBean.currentMapDetails.longitude}, #{homeBean.currentMapDetails.zoom});
+                                </script>
+                            </h:panelGroup>
+
+                            <home:slopeStabilityRadar id="slopeStabilityRadarComponent"/>            
+                            <home:surveyPrism id="surveyPrismComponent"/>
+                            <home:mineSurveyRadar id="mineSurveyRadarComponent"/>
+                            <home:wall id="wallComponent"/>
+
+                            <h:panelGroup id="changeMapCenter">
+                                <script type="text/javascript">
+                                    changeMapCenter(#{homeBean.currentMapDetails.latitude}, #{homeBean.currentMapDetails.longitude}, #{homeBean.currentMapDetails.zoom});
+                                </script>
+                            </h:panelGroup>            
+
+                            <h:panelGroup id="changeGroundOverlay">
+                                <script type="text/javascript">
+                                    changeGroundOverlay(#{imageViewOptionsBean.displayPitPlan})
+                                </script>
+                            </h:panelGroup>
+                            
+                            
+                        </p:tab>  
+                         
+                    </p:tabView>                                  
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="120" collapsible="true">
+                    <h:panelGrid columns="4" width="100%">
+                        <home:locationSelection/>
+                        
+                        <h:panelGrid style="text-align: right">
+                            <h:outputText value="PRJ4M1I assignment" style="font-size: 2.5em"/>
+                        </h:panelGrid>
+                        
+                        <h:outputText value="Version 1.0" style="font-size: large"/>
+                        
+                    </h:panelGrid>
+                </p:layoutUnit>
+            </p:layout>           
+
+        </h:form>
+    </h:body>
+</html>

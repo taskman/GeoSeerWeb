@@ -1,0 +1,60 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="treeInitMethod" method-signature="void listener()" required="true" />
+        <cc:attribute name="update" required="true"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGrid columns="10">
+            <h:outputText value="Site" />
+            <p:selectOneMenu id="site" style="width: 140px" value="#{homeBean.selectedSite}" converter="siteConverter">                
+                <f:selectItems value="#{homeBean.siteList}" var="site" itemLabel="#{site.name}" itemValue="#{site}" />  
+                <p:ajax update="pit" listener="#{homeBean.onSiteChange}" />  
+                <p:ajax update="mineTime"/>
+                <p:ajax update=":geoSeerMainForm:ssrTree" listener="#{cc.attrs.treeInitMethod}"/>
+            </p:selectOneMenu>  
+
+            <h:outputText value="Pit" />
+            <p:selectOneMenu id="pit" style="width: 140px" value="#{homeBean.selectedPit}" var="p" converter="pitConverter">
+                <f:selectItems value="#{homeBean.pitList}" var="pit" itemLabel="#{pit.name}" itemValue="#{pit}" />                  
+                <p:ajax update=":geoSeerMainForm:ssrTree" listener="#{cc.attrs.treeInitMethod}"/>
+                <p:ajax update="mineTime" listener="#{homeBean.onPitChange}" />  
+
+                <p:column>                      
+                    <p:graphicImage rendered="#{p.active}" value="/img/16X16/ellipse_16.png"/>  
+                    <p:graphicImage rendered="#{!p.active}" value="/img/16X16/gradient_16.png"/>  
+                </p:column>  
+
+                <p:column>  
+                    #{p.name}
+                </p:column>                  
+
+
+            </p:selectOneMenu>  
+
+            <h:panelGroup id="mineTime">
+                <h:outputText value="Mine Time:" />
+                <h:inputText value="#{homeBean.currentPitTime}" style="width: 160px" readonly="true">
+                    <f:convertDateTime pattern="#{webConstants.dateTimePattern}" timeZone="GMT" />
+                </h:inputText>
+            </h:panelGroup>
+
+            <h:outputText value="Deployments From:" />
+            <p:calendar effect="slideDown"
+                        maxdate="#{homeBean.toDate}"
+                        value="#{homeBean.fromDate}"
+                        pattern="#{webConstants.datePattern}"/>  
+
+            <h:outputText value="Deployments To:" />
+            <p:calendar effect="slideDown"
+                        maxdate="#{homeBean.toDate}"
+                        value="#{homeBean.toDate}"
+                        pattern="#{webConstants.datePattern}"/> 
+        </h:panelGrid>                
+    </cc:implementation>
+</ui:component>

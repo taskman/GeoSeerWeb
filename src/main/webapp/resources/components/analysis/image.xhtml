@@ -1,0 +1,44 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="width" required="true" />
+        <cc:attribute name="height" required="true" />       
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGrid columns="1" width="100%" style="text-align: left">
+            <h:panelGrid columns="5" width="800" cellspacing="0" cellpadding="0">
+                <p:selectOneMenu>  
+                    <f:selectItem itemLabel="Visual" itemValue="1" />  
+                    <f:selectItem itemLabel="Radar" itemValue="2" />  
+                </p:selectOneMenu>  
+
+                <h:selectOneMenu style="width: 400px;">  
+                    <f:selectItem itemLabel="cam_highres_110525_080241.jpg" itemValue="1" />  
+                    <f:selectItem itemLabel="cam_highres_110525_080242.jpg" itemValue="2" />  
+                    <f:selectItem itemLabel="cam_highres_110525_080243.jpg" itemValue="3" />  
+                    <f:selectItem itemLabel="cam_highres_110525_080244.jpg" itemValue="4" />  
+                    <f:selectItem itemLabel="cam_highres_110525_080245.jpg" itemValue="5" />  
+                    <f:selectItem itemLabel="cam_highres_110525_080246.jpg" itemValue="6" />  
+                </h:selectOneMenu>  
+
+                <h:outputText value="Show Grid: " />  
+                <h:outputText value="Checkbox " />
+
+
+                <h:selectOneMenu style="width: 200px;">
+                    <f:selectItem itemLabel="No Overlay" itemValue="1" />  
+                    <f:selectItem itemLabel="Stable Reference Area" itemValue="1" />  
+                    <f:selectItem itemLabel="SkyMask" itemValue="1" />  
+                </h:selectOneMenu>                             
+            </h:panelGrid>
+
+            <p:graphicImage url="../img/cam_highres_110525_080241.jpg" width="#{cc.attrs.width}" height="#{cc.attrs.height}"/>
+
+        </h:panelGrid>        
+    </cc:implementation>
+</ui:component>

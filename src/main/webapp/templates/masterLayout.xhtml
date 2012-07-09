@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>  
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+        <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?sensor=true">
+        </script>
+<!--        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/custom-theme/skin.css"/>-->
+        <script type="text/javascript">
+          function initialize() {
+            var latlng = new google.maps.LatLng(-34.397, 150.644);
+            var myOptions = {
+              zoom: 8,
+              center: latlng,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"),
+                myOptions);
+          }
+
+        </script>
+        
+        <!-- Charts scripts start -->
+        <!-- swf object (version 2.2) is used to detect if flash is installed and include swf in the page -->
+        <script type="text/javascript" src="../amcharts/flash/swfobject.js"></script>
+
+        <!-- following scripts required for JavaScript version. The order is important! -->
+        <script type="text/javascript" src="../amcharts/javascript/amcharts.js"></script>
+        <script type="text/javascript" src="../amcharts/javascript/amfallback.js"></script>
+        <script type="text/javascript" src="../amcharts/javascript/raphael.js"></script>
+        <!-- Charts scripts end -->
+
+        <style type="text/css">
+            .magnifyarea{ /* CSS to add shadow to magnified image. Optional */
+                box-shadow: 5px 5px 7px #818181;
+                -webkit-box-shadow: 5px 5px 7px #818181;
+                -moz-box-shadow: 5px 5px 7px #818181;
+                filter: progid:DXImageTransform.Microsoft.dropShadow(color=#818181, offX=5, offY=5, positive=true);
+                background: white;
+            }            
+            
+            .ui-widget {
+                font-size: 75%;
+            }
+
+            .themeMenu {
+                overflow: auto;
+                height:300px;
+                width:200px;
+            }
+
+            .ui-layout-north {
+                z-index:20 !important;
+                overflow:visible;
+            }
+
+            .ui-layout-north .ui-layout-unit-content {
+                overflow:visible;
+            }
+        </style>
+        
+        <title>GeoSeer</title>
+    </h:head>
+    <h:body onload="initialize()">
+        <h:form id="geoSeerMainForm">
+            <p:layout fullPage="true">
+                <ui:debug hotkey="s" rendered="true"/>
+
+                <p:layoutUnit position="center">                  
+                    <ui:insert name="content">
+
+                    </ui:insert>
+                </p:layoutUnit>  
+
+                <p:layoutUnit position="north" size="80">  
+
+                    <p:menubar>
+                        <p:menuitem value="Home" url="/index.jsf" icon="ui-icon ui-icon-home" />
+                        <p:submenu label="Analysis" icon="ui-icon ui-icon-script">
+                            <p:menuitem value="Deformation" url="/analysis/deformation.jsf" />
+                            <p:menuitem value="Correction" url="/analysis/correction.jsf" />
+                            <p:menuitem value="Velocity" url="/analysis/deformation.jsf" />
+                        </p:submenu>                        
+                        <p:menuitem value="Figures" url="/figures/figuresIndex.jsf" icon="ui-icon ui-icon-gear" />
+                        <p:menuitem value="Alarms" url="/alarms/alarmsIndex.jsf" icon="ui-icon ui-icon-clock" />
+                        <p:menuitem value="Images" url="/images/index.jsf" icon="ui-icon ui-icon-image" />
+                        <p:menuitem value="Snapshots" url="/snapshots/index.jsf" icon="ui-icon ui-icon-pencil" />
+                        <p:menuitem value="Reports" url="/reports/index.jsf" icon="ui-icon ui-icon-document"/>
+                        <p:submenu label="Administration" icon="ui-icon ui-icon-wrench">
+                            <p:menuitem value="Users" url="/admin/users.jsf" />
+                            <p:menuitem value="Roles" url="#" />
+                            <p:menuitem value="Reports" url="#" />
+                        </p:submenu>                        
+                        <p:submenu label="Help" icon="ui-icon ui-icon-help">
+                        </p:submenu>                        
+                    </p:menubar>      
+
+                    <ui:insert name="siteSelection">
+
+                    </ui:insert>
+
+                </p:layoutUnit>  
+
+            </p:layout>  
+        </h:form>
+    </h:body>
+</html>

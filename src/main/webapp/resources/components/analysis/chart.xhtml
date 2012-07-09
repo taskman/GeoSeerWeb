@@ -1,0 +1,60 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="chartDivName" required="true" />
+    </cc:interface>
+    <cc:implementation>
+        <script type="text/javascript">
+        
+            var params = 
+            {
+                bgcolor:"#FFFFFF"
+            };
+            
+            var flashVars = 
+            {
+                path: "../amcharts/flash/",
+                
+                /* in most cases settings and data are loaded from files, but, as this require
+                 all the files to be upladed to web server, we use inline data and settings here.*/
+                 
+                // settings_file: "../sampleData/column_settings.xml",
+                // data_file: "data.csv"
+                
+                data_file: "data.csv",
+                settings_file: "settings.xml"
+                
+            };
+            
+            // change 8 to 80 to test javascript version
+            if (swfobject.hasFlashPlayerVersion("8"))
+            {
+                swfobject.embedSWF("../amcharts/flash/amline.swf", "#{cc.attrs.chartDivName}", "1506", "250", "8.0.0", "../amcharts/flash/expressInstall.swf", flashVars, params);
+//                swfobject.embedSWF("../amcharts/flash/amline.swf", "chartdiv2", "1506", "250", "8.0.0", "../amcharts/flash/expressInstall.swf", flashVars, params);
+//                swfobject.embedSWF("../amcharts/flash/amline.swf", "chartdiv3", "1506", "250", "8.0.0", "../amcharts/flash/expressInstall.swf", flashVars, params);
+            }
+            else
+            {
+                var amFallback = new AmCharts.AmFallback();
+                // amFallback.settingsFile = flashVars.settings_file;  		// doesn't support multiple settings files or additional_chart_settins as flash does
+                // amFallback.dataFile = flashVars.data_file;
+                amFallback.chartSettings = flashVars.chart_settings;
+                amFallback.pathToImages = "../amcharts/javascript/images/";
+                amFallback.chartData = flashVars.chart_data;
+                amFallback.type = "line";
+                amFallback.write("chartdiv");
+            }
+        
+        </script>
+        <div style="width:100%; text-align: center">
+            <!-- chart is placed in this div. if you have more than one chart on a page, give unique id for each div -->
+            <div id="#{cc.attrs.chartDivName}" style="width:100%; height:250px; background-color:#FFFFFF"></div>
+        </div>
+
+    </cc:implementation>
+</ui:component>

@@ -1,0 +1,50 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="id"/>
+    </cc:interface>
+    <cc:implementation>        
+        <h:panelGroup id="wall" >
+            <h:panelGroup rendered="#{overlayOptionsBean.displayWall}">
+                <ui:repeat var="site" value="#{homeBean.siteList}">
+                    <ui:repeat var="pit" value="#{site.pitList}">
+                        <ui:repeat var="deployment" value="#{pit.deploymentList}">
+                            <ui:repeat var="wall" value="#{deployment.wallList}">
+                                <script type="text/javascript">                                                       
+                                    var image = "#{request.contextPath}/img/24X24/SSR_a.png";
+                                    var latlng = new google.maps.LatLng(#{wall.mapDetails.latitude}, #{wall.mapDetails.longitude});
+                                    var marker = new google.maps.Marker({
+                                          position: latlng, 
+                                          map: window.myValue, 
+                                          icon: image,
+                                          title:"#{wall.name}"});
+                                      
+                                     google.maps.event.addListener(marker, 'click', onWallClick); 
+                                     wallMarkersArray.push(marker);     
+                                </script>
+                            </ui:repeat>
+                        </ui:repeat>
+                    </ui:repeat>
+                </ui:repeat>
+            </h:panelGroup>
+            
+            <h:panelGroup rendered="#{!overlayOptionsBean.displayWall}">
+                <script type="text/javascript">
+                    if (wallMarkersArray) {                        
+                        for (i in wallMarkersArray) {
+                            if (wallMarkersArray[i] instanceof google.maps.Marker) {
+                                wallMarkersArray[i].setMap(null);
+                            }                           
+                        }
+                        var wallMarkersArray = [];
+                    }
+                </script>
+            </h:panelGroup>
+        </h:panelGroup>        
+    </cc:implementation>
+</ui:component>

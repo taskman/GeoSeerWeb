@@ -1,0 +1,37 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:home="http://java.sun.com/jsf/composite/components/home">
+    <cc:interface>
+        <cc:attribute name="latitude" required="true"/>
+        <cc:attribute name="longitude" required="true"/>
+        <cc:attribute name="zoom" required="true"/>
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGroup id="initMap">
+            <script type="text/javascript">
+                alert("hi");
+                var latlng = new google.maps.LatLng(#{cc.attrs.latitude}, #{cc.attrs.longitude});
+                var zoomAmount = #{cc.attrs.zoom};
+                var myOptions = {
+                  zoom: zoomAmount,
+                  center: latlng,
+                  disableDefaultUI: true,
+                  panControl: true,
+                  zoomControl: true,
+                  mapTypeControl: false,
+                  scaleControl: true,
+                  streetViewControl: false,
+                  overviewMapControl: true,              
+                  mapTypeId: google.maps.MapTypeId.SATELLITE 
+                };
+                var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);               
+                window.myValue = map;            
+            </script>
+        </h:panelGroup>
+    </cc:implementation>
+</ui:component>

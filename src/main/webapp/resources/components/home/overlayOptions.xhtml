@@ -1,0 +1,31 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:home="http://java.sun.com/jsf/composite/components/home">
+    <cc:interface>
+    </cc:interface>
+    <cc:implementation>
+        <p:panel id="overlayOptions" header="Display Device Locations">
+            <p:scrollPanel style="width:185px;height:130px;border: 0px">
+                <h:panelGrid columns="1">
+                    <h:panelGroup>
+                        <h:selectBooleanCheckbox label="Slope Stability Radar" value="#{overlayOptionsBean.displaySlopeStabilityRadar}">
+                            <p:ajax event="change" update=":geoSeerMainForm:geoSeerMainTabView:slopeStabilityRadarComponent:slopeStabilityRadar"/>
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value="Slope Stability Radar"/>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <h:selectBooleanCheckbox label="Survey Prisms" value="#{overlayOptionsBean.displaySurveyPrism}">
+                            <p:ajax event="change" update=":geoSeerMainForm:geoSeerMainTabView:surveyPrismComponent:surveyPrism"/>
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value="Survey Prisms"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:scrollPanel>            
+        </p:panel>        
+    </cc:implementation>
+</ui:component>

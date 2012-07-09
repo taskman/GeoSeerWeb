@@ -1,0 +1,19 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui"
+              xmlns:generic="http://java.sun.com/jsf/composite/components/generic">
+    <cc:interface>
+        <cc:attribute name="id" required="false"/>
+        <cc:attribute name="update" required="true"/>
+    </cc:interface>    
+    <cc:implementation>
+        <h:panelGrid columns="1" id="#{cc.attrs.id}">
+                <generic:photosDropDown id="photosDropDown1" update="#{cc.attrs.update}"/>
+            <p:graphicImage id="img1" url="/img/walls/#{homeBean.selectedWallPhoto}" width="850" height="150"/>            
+        </h:panelGrid>
+    </cc:implementation>
+</ui:component>

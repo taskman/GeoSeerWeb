@@ -1,0 +1,41 @@
+<ui:component xmlns="http://www.w3.org/1999/xhtml"
+              xmlns:h="http://java.sun.com/jsf/html"
+              xmlns:f="http://java.sun.com/jsf/core" 
+              xmlns:ui="http://java.sun.com/jsf/facelets"
+              xmlns:c="http://java.sun.com/jsp/jstl/core"      
+              xmlns:cc="http://java.sun.com/jsf/composite"
+              xmlns:p="http://primefaces.org/ui">
+    <cc:interface>
+        <cc:attribute name="rendered" required="true" type="boolean" />
+    </cc:interface>
+    <cc:implementation>
+        <h:panelGrid columns="1" width="100%" style="text-align: left" rendered="#{cc.attrs.rendered}">
+            <h:panelGrid columns="6" width="800" cellspacing="0" cellpadding="0">
+                <p:selectOneMenu style="width: 350px;">  
+                    <f:selectItem itemLabel="Deformation" itemValue="1" />  
+                    <f:selectItem itemLabel="Amplitude" itemValue="2" />  
+                    <f:selectItem itemLabel="Range" itemValue="3" />  
+                    <f:selectItem itemLabel="Coherence" itemValue="4" />  
+                    <f:selectItem itemLabel="Uncorrected Deformation" itemValue="5" />  
+                    <f:selectItem itemLabel="Velocity (1 hour)" itemValue="6" />  
+                    <f:selectItem itemLabel="Velocity (24 hour)" itemValue="7" />  
+                    <f:selectItem itemLabel="Dimensionless Velocity (1 hour)" itemValue="8" />  
+                    <f:selectItem itemLabel="Dimensionless Velocity (24 hour)" itemValue="9" />  
+                </p:selectOneMenu>  
+
+                <h:outputText value="Show Grid: " />  
+                <h:outputText value="Checkbox " />
+
+                <h:outputText value="Fine: " />  
+                <h:outputText value="Checkbox " />
+
+                <p:selectOneMenu style="width: 200px;">
+                    <f:selectItem itemLabel="No Overlay" itemValue="1" />  
+                    <f:selectItem itemLabel="Stable Reference Area" itemValue="1" />  
+                    <f:selectItem itemLabel="SkyMask" itemValue="1" />  
+                </p:selectOneMenu>                             
+            </h:panelGrid>
+
+        </h:panelGrid>        
+    </cc:implementation>
+</ui:component>
