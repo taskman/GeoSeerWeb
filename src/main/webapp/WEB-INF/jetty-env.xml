@@ -1,0 +1,14 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Jetty//Configure//EN" "http://www.eclipse.org/jetty/configure.dtd">
+ 
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <Set class="org.eclipse.jetty.util.resource.Resource" name="defaultUseCaches">false</Set>
+    <Get name="sessionHandler">
+        <Set name="sessionManager">
+            <New class="org.eclipse.jetty.server.session.HashSessionManager">
+                <Set name="sessionCookie">XSESSIONID</Set>
+<!--                <Set name="sessionIdPathParameterName">xsessionid</Set>-->
+            </New>
+        </Set>
+    </Get>
+</Configure>
