@@ -42,7 +42,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>index_1.jsf</welcome-file>
+        <welcome-file>index_1.xhtml</welcome-file>
     </welcome-file-list>
 </web-app>
 
